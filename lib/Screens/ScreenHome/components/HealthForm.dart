@@ -57,12 +57,12 @@ List<List<dynamic>>? _csvLoadData;
     return  Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          buildRow('WEIGHT   ','0',weightController),
-          buildRow('% H2O     ','0',h2oController),
-          buildRow('% FAT      ','0',fatController),
-          buildRow('% MUSCLES','0',muscleController),
-          buildRow('BONES      ','0',bonesController),
-          buildRow('BMI      ','0',bmiController),
+          buildRow('WEIGHT :','0',weightController),
+          buildRow('% H2O :','0',h2oController),
+          buildRow('% FAT :','0',fatController),
+          buildRow('% MUSCLES :','0',muscleController),
+          buildRow('BONES :','0',bonesController),
+          buildRow('BMI :','0',bmiController),
            ElevatedButton(  
                     style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blue)),
@@ -189,11 +189,21 @@ actions: [
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Flexible(flex: 2, 
-          child: Text(name,textAlign: TextAlign.left)),
-          Flexible(
-            flex: 8,
+            Expanded(
+            flex: 1,
             child:
+            Container()),
+          Expanded(
+            flex: 2,
+            child:
+          Text(name,textAlign: TextAlign.right)),
+           Expanded(
+            flex: 1,
+            child:
+            Container()),
+        Expanded(
+            flex: 4,
+          child: 
                   TextField(  
                     controller: fieldController,
                      keyboardType: TextInputType.numberWithOptions(signed:false,decimal:true),
@@ -207,7 +217,10 @@ actions: [
                     ),  
                   ),  
                 
-          ),  
+           ), Expanded(
+            flex: 2,
+            child:
+            Container()),
         ],
       );
       
