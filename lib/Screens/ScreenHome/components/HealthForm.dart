@@ -259,7 +259,7 @@ actions: [
                       ),
                     )
                     .toList(),
-                rows: _csvViewData!
+                rows: _csvViewData!.skip(1)
                     .map(
                       (csvrow) => DataRow(
                         cells: csvrow
