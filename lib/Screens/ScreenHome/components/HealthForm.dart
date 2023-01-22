@@ -2,10 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:csv/csv.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter_01/Models/healthrow.dart';
 import 'package:flutter_01/Services/file_utilities.dart';
-
+import 'package:intl/intl.dart';
 
 
 class HealthForm extends StatefulWidget 
@@ -20,13 +19,16 @@ class HealthForm extends StatefulWidget
 
 class _HealthFormState extends State<HealthForm> {
 
-  final weightController = TextEditingController();
-  final h2oController    = TextEditingController();
-  final fatController    = TextEditingController();
-  final muscleController = TextEditingController();
-
+  final weightController  = TextEditingController();
+  final h2oController     = TextEditingController();
+  final fatController     = TextEditingController();
+  final muscleController  = TextEditingController();
+  final bonesController   = TextEditingController();
+  final bmiController     = TextEditingController();
+  
  
-List<List<dynamic>>? _csvData;
+List<List<dynamic>>? _csvViewData;
+List<List<dynamic>>? _csvLoadData;
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -34,9 +36,15 @@ List<List<dynamic>>? _csvData;
     h2oController.dispose();
     fatController.dispose();
     muscleController.dispose();
+    bonesController.dispose();
+    bmiController.dispose();
     super.dispose();
   }
-
+    @override
+    void initState() {
+    super.initState();
+    widget.fileUtils.initCsv();
+  }
   @override
   Widget build(BuildContext context) {
    
@@ -53,6 +61,8 @@ List<List<dynamic>>? _csvData;
           buildRow('% H2O     ','0',h2oController),
           buildRow('% FAT      ','0',fatController),
           buildRow('% MUSCLES','0',muscleController),
+          buildRow('BONES      ','0',fatController),
+          buildRow('BMI      ','0',muscleController),
            RaisedButton(  
                   textColor: Colors.white,  
                   color: Colors.blue,  
@@ -61,7 +71,9 @@ List<List<dynamic>>? _csvData;
                   onPressed: ()
                   {
                  
-                         if(!validateInput(weightController) || !validateInput(h2oController) || !validateInput(fatController) || !validateInput(muscleController))
+                         if(!validateInput(weightController) || !validateInput(h2oController) || !validateInput(fatController) || !validateInput(muscleController)
+                         || !validateInput(bonesController) || !validateInput(bmiController)
+                         )
                           {
                            return;
                          }
@@ -78,7 +90,10 @@ List<List<dynamic>>? _csvData;
                          buildDialogRow('WEIGHT  ',': '+weightController.text),
                          buildDialogRow('% H2O  ',': '+h2oController.text),
                          buildDialogRow('% FAT  ',': '+fatController.text),
-                         buildDialogRow('% MUSCLES  ',': '+muscleController.text),     
+                         buildDialogRow('% MUSCLES  ',': '+muscleController.text), 
+                         buildDialogRow('BONES  ',': '+bonesController.text),     
+                         buildDialogRow('BMI  ',': '+bmiController.text),     
+                             
                         ]
                         ,),
 
@@ -86,21 +101,27 @@ List<List<dynamic>>? _csvData;
 actions: [
               // The "Yes" button
               TextButton(
-                  onPressed: () {
-                    // Remove the box
-                    setState(() {
-                      //save data
+                  onPressed: () async {
+
+
+                       //save data
+                      final DateTime now = DateTime.now();
+                      final DateFormat formatter = DateFormat('yyyy/MM/dd');
+                      final String formatted = formatter.format(now);
+                      var healthRow = HealthRow(formatted,weightController.text,h2oController.text,fatController.text,muscleController.text,'','');
+                      await widget.fileUtils.writeHealthCsv(healthRow).then((value) {
+                       setState(() {
+                       _csvLoadData   = value;
+                      //clean current view dataset
                        weightController.text = "";
-                       h2oController.text = "";
-                       fatController.text = "";
+                       h2oController.text    = "";
+                       fatController.text    = "";
                        muscleController.text = "";
-                      _csvData?.clear();
-                      _csvData = null;
-
+                      _csvViewData?.clear();
+                      _csvViewData = null;
+                      Navigator.of(context).pop();
                     });
-
-                    // Close the dialog
-                    Navigator.of(context).pop();
+                      });  
                   },
                   child: const Text('Yes')),
               TextButton(
@@ -121,37 +142,20 @@ actions: [
                   color: Colors.blue,  
                   child: const Text('History'),  
                   
-                  onPressed:  () async {
-               
-               
-                 
-                showCSVDialog();
-                      
-                 
-                 if(_csvData==null)
-                 {
-                   
-                   try
+                  onPressed:  () async
                    {
-                 
-                    _csvData = await widget.fileUtils.processCsv(context);
-                       setState( ()  {
-                       Navigator.of(context).pop();
-                       showCSVDialog();
-                      }
-                    );
-                   }
-                   catch(ex)
+              
+                   showLoadingOrCSVDialog();
+            
+                  if(_csvLoadData!=null) 
                    {
-                       setState( ()  {
-                       Navigator.of(context).pop();
-                       
-                      });
+                   _updateViewState(_csvLoadData);
                    }
+                  else 
+                  {
+                   widget.fileUtils.readHealthCsv().then((value) => _updateViewState(value));
+                  }
                     
-
-                   
-                 }
                   },  
                 )  ,
 
@@ -226,7 +230,7 @@ actions: [
                           return true;
        }
        
-         void showCSVDialog()
+         void showLoadingOrCSVDialog()
           {
 
    showDialog(
@@ -241,10 +245,10 @@ actions: [
        scrollDirection: Axis.vertical,
         child: SingleChildScrollView (
          scrollDirection: Axis.horizontal,
-         child:  _csvData == null
+         child:  _csvViewData == null
             ? const CircularProgressIndicator()
             : DataTable(
-                columns: _csvData![0]
+                columns: _csvViewData![0]
                     .map(
                       (item) => DataColumn(
                         label: Text(
@@ -253,7 +257,7 @@ actions: [
                       ),
                     )
                     .toList(),
-                rows: _csvData!
+                rows: _csvViewData!
                     .map(
                       (csvrow) => DataRow(
                         cells: csvrow
@@ -276,4 +280,27 @@ actions: [
             },
           );
          }
+         
+           void _updateViewState(List<List>? value) {
+
+                      
+
+                       //setState( ()  
+                       //{
+                       _csvLoadData = value;
+                       _csvViewData = _csvLoadData;
+                       _csvLoadData = null;
+                       
+                       //close current dialog
+                       Navigator.of(context).pop();
+                       if(_csvViewData!=null)
+                       {
+                        //show data if any
+                        showLoadingOrCSVDialog();
+                       }
+                   // }
+                  //  );
+          }
+
+           
 }
