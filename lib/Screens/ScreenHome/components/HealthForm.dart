@@ -61,8 +61,8 @@ List<List<dynamic>>? _csvLoadData;
           buildRow('% H2O     ','0',h2oController),
           buildRow('% FAT      ','0',fatController),
           buildRow('% MUSCLES','0',muscleController),
-          buildRow('BONES      ','0',fatController),
-          buildRow('BMI      ','0',muscleController),
+          buildRow('BONES      ','0',bonesController),
+          buildRow('BMI      ','0',bmiController),
            RaisedButton(  
                   textColor: Colors.white,  
                   color: Colors.blue,  
@@ -108,7 +108,7 @@ actions: [
                       final DateTime now = DateTime.now();
                       final DateFormat formatter = DateFormat('yyyy/MM/dd');
                       final String formatted = formatter.format(now);
-                      var healthRow = HealthRow(formatted,weightController.text,h2oController.text,fatController.text,muscleController.text,'','');
+                      var healthRow = HealthRow(formatted,weightController.text,h2oController.text,fatController.text,muscleController.text,bonesController.text,bmiController.text);
                       await widget.fileUtils.writeHealthCsv(healthRow).then((value) {
                        setState(() {
                        _csvLoadData   = value;
@@ -117,6 +117,8 @@ actions: [
                        h2oController.text    = "";
                        fatController.text    = "";
                        muscleController.text = "";
+                       bonesController.text    = "";
+                       bmiController.text = "";
                       _csvViewData?.clear();
                       _csvViewData = null;
                       Navigator.of(context).pop();
