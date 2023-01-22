@@ -291,7 +291,7 @@ actions: [
                        //{
                        _csvLoadData = value;
                        _csvViewData = _csvLoadData;
-                       _csvLoadData = null;
+                      // _csvLoadData = null;
                        
                        //close current dialog
                        Navigator.of(context).pop();
