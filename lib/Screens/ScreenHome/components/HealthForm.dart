@@ -88,12 +88,12 @@ List<List<dynamic>>? _csvLoadData;
                         // TextEditingController.
                         content: Column(mainAxisSize: MainAxisSize.min , mainAxisAlignment: MainAxisAlignment.spaceEvenly,children:
                          [
-                         buildDialogRow('WEIGHT  ',': '+weightController.text),
-                         buildDialogRow('% H2O  ',': '+h2oController.text),
-                         buildDialogRow('% FAT  ',': '+fatController.text),
-                         buildDialogRow('% MUSCLES  ',': '+muscleController.text), 
-                         buildDialogRow('BONES  ',': '+bonesController.text),     
-                         buildDialogRow('BMI  ',': '+bmiController.text),     
+                         buildDialogRow('WEIGHT  ',': ${weightController.text}'),
+                         buildDialogRow('% H2O  ',': ${h2oController.text}'),
+                         buildDialogRow('% FAT  ',': ${fatController.text}'),
+                         buildDialogRow('% MUSCLES  ',': ${muscleController.text}'), 
+                         buildDialogRow('BONES  ',': ${bonesController.text}'),     
+                         buildDialogRow('BMI  ',': ${bmiController.text}'),     
                              
                         ]
                         ,),
