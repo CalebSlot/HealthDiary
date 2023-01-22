@@ -16,11 +16,10 @@ class FileUtils
    {
    SharedPreferences sharedPreferences = await getSharedPreferencesInstance();
    String? fileContent = null;
+
         if(sharedPreferences.containsKey(fileName))
         {
-           fileContent = 'DATE,WEIGHT,%H20,%FAT,%MUSCLES,BONES,BMI';
-           fileContent='$fileContent\n${sharedPreferences.getString(fileName)}';
-
+           fileContent=sharedPreferences.getString(fileName);
         }
     
     return fileContent;
@@ -34,13 +33,13 @@ class FileUtils
         if(sharedPreferences.containsKey(fileName))
         {
            String allCsv = sharedPreferences.getString(fileName);
-           allCsv = '$allCsv\n${row.toCsv()}';
+           allCsv = '$allCsv${row.toCsv()}\n';
            sharedPreferences.setString(fileName,allCsv);
           
         }
         else
         {
-           sharedPreferences.setString(fileName,row.toCsv());
+           sharedPreferences.setString(fileName,'${row.toCsv()}\n');
         }
        
     return _readWebFile(fileName);
@@ -77,19 +76,17 @@ Future<List<List<dynamic>>?> readHealthCsv() async
     String? fileContent = null;
     if(!kIsWeb)
       {
-     fileContent = await _readTextFile(csv_name);
-
-   }
-   else
-   {
-    fileContent = await _readWebFile(csv_name);
-   }
-
-    if(fileContent == null)
+       fileContent = await _readTextFile(csv_name);
+      }
+    else
     {
-      return null;
+     fileContent = await _readWebFile(csv_name);
     }
 
+if(fileContent == null)
+{
+  return null;
+}
     return const CsvToListConverter().convert(fileContent, eol: "\n");
 }
 
@@ -103,7 +100,7 @@ Future<List<List<dynamic>>?> writeHealthCsv(HealthRow health) async
     {
       if(!kIsWeb)
       {
-       File file = await _writeTextFile(csv_name,health.toCsv());
+       File file = await _writeTextFile(csv_name,'${health.toCsv()}\n');
        fileContent = await file.readAsString();
       }
       else
@@ -123,15 +120,21 @@ return const CsvToListConverter().convert(fileContent, eol: "\n");
     return await SharedPreferences.getInstance();
    }
 
-  void initCsv()
-  {
+  Future<void> initCsv()
+  async {
       if(!kIsWeb)
       {
-        
+        String? fileContent = await _readTextFile(csv_name);
+        if(fileContent == null)
+        {
+         _writeTextFile(csv_name,'${columns_headers.toCsv()}\n');
+        }
       }
       else
       {
-        getSharedPreferencesInstance().then((value) => value.clear());
+        //WEB CASES.. will change for persistency   
+        getSharedPreferencesInstance().then((value) => value.clear()).then((value) =>  _writeWebFile(csv_name,columns_headers));
+        
       }
   }
 
