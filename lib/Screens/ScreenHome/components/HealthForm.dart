@@ -63,9 +63,10 @@ List<List<dynamic>>? _csvLoadData;
           buildRow('% MUSCLES','0',muscleController),
           buildRow('BONES      ','0',bonesController),
           buildRow('BMI      ','0',bmiController),
-           RaisedButton(  
-                  textColor: Colors.white,  
-                  color: Colors.blue,  
+           ElevatedButton(  
+                    style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                  
                   child: const Text('Register'),  
                   
                   onPressed: ()
@@ -139,9 +140,9 @@ actions: [
           );
                   },  
                 ),  
-           RaisedButton(  
-                  textColor: Colors.white,  
-                  color: Colors.blue,  
+            ElevatedButton(  
+                    style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.blue)),
                   child: const Text('History'),  
                   
                   onPressed:  () async
