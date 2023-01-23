@@ -13,7 +13,9 @@ class ScreenHome extends StatelessWidget {
           title: const Text('Health Diary!'),
         ),
         // Change to buildColumn() for the other column example
-        body:  Center(child: HealthForm(fileUtils: FileUtils())),
-      );
+        body:  Center(child: SingleChildScrollView(
+       scrollDirection: Axis.vertical,
+        child:HealthForm(fileUtils: FileUtils())),
+      ));
   }
  }

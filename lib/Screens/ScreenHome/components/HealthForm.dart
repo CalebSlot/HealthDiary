@@ -57,13 +57,27 @@ List<List<dynamic>>? _csvLoadData;
     return  Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          buildRow('WEIGHT :','0',weightController),
-          buildRow('% H2O :','0',h2oController),
-          buildRow('% FAT :','0',fatController),
-          buildRow('% MUSCLES :','0',muscleController),
-          buildRow('BONES :','0',bonesController),
-          buildRow('BMI :','0',bmiController),
-           ElevatedButton(  
+        Padding(
+        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        child:buildRow('WEIGHT :','0',weightController,const Icon(Icons.balance_rounded))),
+        Padding(
+        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        child:buildRow('% H2O :','0',h2oController,const Icon(Icons.water_drop_outlined))),
+        Padding(
+        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        child:buildRow('% FAT :','0',fatController,const Icon(Icons.bubble_chart_outlined))),
+        Padding(
+        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        child:buildRow('% MUSCLES :','0',muscleController,const Icon(Icons.sports_mma_outlined))),
+        Padding(
+        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        child:buildRow('BONES :','0',bonesController,const Icon(Icons.attribution_rounded))),
+        Padding(
+        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        child:buildRow('BMI :','0',bmiController,const Icon(Icons.health_and_safety_outlined ))),
+        Padding(
+        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        child:   ElevatedButton(  
                     style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blue)),
                   
@@ -139,8 +153,10 @@ actions: [
             },
           );
                   },  
-                ),  
-            ElevatedButton(  
+                )),  
+          Padding(
+        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        child:  ElevatedButton(  
                     style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blue)),
                   child: const Text('History'),  
@@ -160,7 +176,7 @@ actions: [
                   }
                     
                   },  
-                )  ,
+                ))  ,
 
 
         ],
@@ -184,11 +200,13 @@ actions: [
       child: Container(
           child: Text(value,textAlign: TextAlign.start)))),],);
       }
-      Widget buildRow(String name,String value,TextEditingController fieldController) =>
+      Widget buildRow(String name,String value,TextEditingController fieldController,Icon textIcon) =>
       // #docregion Row
-      Row(
+      Row( 
+        
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+
             Expanded(
             flex: 1,
             child:
@@ -196,7 +214,21 @@ actions: [
           Expanded(
             flex: 2,
             child:
-          Text(name,textAlign: TextAlign.right)),
+          RichText(
+  text: TextSpan(
+    style: Theme.of(context).textTheme.bodyMedium,
+    children:  [
+      WidgetSpan(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2.0),
+          child: textIcon,
+        ),
+      ),
+      TextSpan(text: name),
+       
+    ],
+  ),
+)),
            Expanded(
             flex: 1,
             child:
@@ -206,12 +238,12 @@ actions: [
           child: 
                   TextField(  
                     controller: fieldController,
-                     keyboardType: TextInputType.numberWithOptions(signed:false,decimal:true),
+                     keyboardType: const TextInputType.numberWithOptions(signed:false,decimal:true),
             inputFormatters: [
     FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}'))
 ],
                     decoration:  InputDecoration(  
-                      border: OutlineInputBorder(),  
+                      border: const OutlineInputBorder(),  
                       labelText: value,  
                       hintText: 'Enter Your $name',  
                     ),  
