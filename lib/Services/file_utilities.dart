@@ -133,8 +133,14 @@ return const CsvToListConverter().convert(fileContent, eol: "\n");
       else
       {
         //WEB CASES.. will change for persistency   
-        getSharedPreferencesInstance().then((value) => value.clear()).then((value) =>  _writeWebFile(csv_name,columns_headers));
-        
+        //getSharedPreferencesInstance().then((value) => value.clear()).then((value) =>  _writeWebFile(csv_name,columns_headers));
+        getSharedPreferencesInstance().then((diaries) 
+        { 
+         if(!diaries.containsKey(csv_name))
+         {
+           _writeWebFile(csv_name,columns_headers);
+         }
+        });
       }
   }
 
