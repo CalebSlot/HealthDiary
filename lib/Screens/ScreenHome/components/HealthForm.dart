@@ -58,25 +58,25 @@ List<List<dynamic>>? _csvLoadData;
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
         Padding(
-        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
         child:buildRow('WEIGHT :','0',weightController,const Icon(Icons.balance_rounded))),
         Padding(
-        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
         child:buildRow('% H2O :','0',h2oController,const Icon(Icons.water_drop_outlined))),
         Padding(
-        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
         child:buildRow('% FAT :','0',fatController,const Icon(Icons.bubble_chart_outlined))),
         Padding(
-        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
         child:buildRow('% MUSCLES :','0',muscleController,const Icon(Icons.sports_mma_outlined))),
         Padding(
-        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
         child:buildRow('BONES :','0',bonesController,const Icon(Icons.attribution_rounded))),
         Padding(
-        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
         child:buildRow('BMI :','0',bmiController,const Icon(Icons.health_and_safety_outlined ))),
         Padding(
-        padding: const EdgeInsets.fromLTRB(0,8.0,0,8.0),
+        padding: const EdgeInsets.fromLTRB(8.0,8.0,8.0,8.0),
         child:   ElevatedButton(  
                     style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blue)),
@@ -207,12 +207,9 @@ actions: [
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
 
-            Expanded(
-            flex: 1,
-            child:
-            Container()),
+          
           Expanded(
-            flex: 2,
+            flex: 3,
             child:
           RichText(
   text: TextSpan(
@@ -229,12 +226,9 @@ actions: [
     ],
   ),
 )),
-           Expanded(
-            flex: 1,
-            child:
-            Container()),
+          
         Expanded(
-            flex: 4,
+            flex: 7,
           child: 
                   TextField(  
                     controller: fieldController,
@@ -249,10 +243,7 @@ actions: [
                     ),  
                   ),  
                 
-           ), Expanded(
-            flex: 2,
-            child:
-            Container()),
+           ), 
         ],
       );
       
