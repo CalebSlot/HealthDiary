@@ -15,7 +15,7 @@ class FileUtils
    Future<String?> _readWebFile(String fileName) async
    {
    SharedPreferences sharedPreferences = await getSharedPreferencesInstance();
-   String? fileContent = null;
+   String? fileContent;
 
         if(sharedPreferences.containsKey(fileName))
         {
@@ -28,11 +28,10 @@ class FileUtils
     Future<String?> _writeWebFile(String fileName,HealthRow row) async
    {
      SharedPreferences sharedPreferences = await getSharedPreferencesInstance();
-     String? fileContent = null;
 
         if(sharedPreferences.containsKey(fileName))
         {
-           String allCsv = sharedPreferences.getString(fileName);
+           String? allCsv = sharedPreferences.getString(fileName);
            allCsv = '$allCsv${row.toCsv()}\n';
            sharedPreferences.setString(fileName,allCsv);
           
@@ -73,7 +72,7 @@ Future<String?> _readTextFile(String fileName) async {
   
 Future<List<List<dynamic>>?> readHealthCsv() async 
 {
-    String? fileContent = null;
+    String? fileContent;
     if(!kIsWeb)
       {
        fileContent = await _readTextFile(csv_name);
@@ -94,7 +93,7 @@ Future<List<List<dynamic>>?> writeHealthCsv(HealthRow health) async
 {
 
 
- String? fileContent = null;
+ String? fileContent;
 
    try 
     {
